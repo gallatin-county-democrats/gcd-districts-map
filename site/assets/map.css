@@ -196,3 +196,20 @@ html, body {
 .gcd-dm-note { font-size: 13px; color: var(--gcd-muted); margin: 0; }
 .gcd-dm-note a { color: var(--gcd-copper-light); }
 .gcd-dm-note a:hover { color: var(--gcd-cream); }
+
+/* Page around the map */
+.gcd-page { max-width: 1000px; margin: 0 auto; padding: 20px 16px 32px; }
+.gcd-page-header { margin-bottom: 12px; }
+.gcd-page-org {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gcd-copper-light);
+}
+.gcd-page-header h1 { margin: 2px 0 0; font-size: 28px; line-height: 1.2; color: var(--gcd-cream); }
+@media (max-width: 600px) {
+  .gcd-page { padding-top: 14px; }
+  .gcd-page-header h1 { font-size: 23px; }
+}

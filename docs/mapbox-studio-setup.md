@@ -1,7 +1,7 @@
 # Mapbox Studio setup
 
 All map styling lives in one Mapbox Studio style that draws from all five
-tilesets. The plugin only turns layers on and off and points each highlight
+tilesets. The map code only turns layers on and off and points each highlight
 layer at the visitor's district, so it relies on the layer names below.
 
 ## 1. Upload the tilesets
@@ -12,7 +12,7 @@ python3 scripts/prepare_tilesets.py
 
 In Studio → **Tilesets → New tileset → Upload file**, upload each file in
 `tilesets/` (one tileset per file, six in all). Note each **Tileset ID**
-(`yourname.abc123xy`) and enter it under Settings → District Map in WordPress.
+(`yourname.abc123xy`) and enter it under `tilesets` in `site/config.json`.
 
 To update a layer later (redistricting, precinct changes), re-export from QGIS,
 re-run the script, and use **Replace** on the existing tileset so its ID stays
@@ -41,8 +41,8 @@ per district, county and precinct, placed well inside it. For each label layer
 - Text field: `name` (HD 69, SD 32, MT-01, 57A, Gallatin), or `label` for the
   long form (House District 69)
 
-The `labels` tileset is for display only; don't enter it in the plugin's
-tileset settings.
+The `labels` tileset is for display only; don't enter it under `tilesets` in
+`site/config.json`.
 
 Layers with any other name are never touched, so they're always visible. Put
 shared layers here, such as the Gallatin County outline (the `counties` tileset
@@ -80,11 +80,14 @@ bold outline works well). Give it a filter that matches nothing, e.g.
 ## 4. Publish and connect
 
 **Publish** the style, then copy its **Style URL** (`mapbox://styles/yourname/...`)
-into the plugin settings. Republishing in Studio updates the live map; no
-plugin changes needed.
+into `styleUrl` in `site/config.json`. Republishing in Studio updates the live
+map; no code changes or redeploy needed.
 
 ## Token
 
 Create a public (`pk.`) token in Mapbox → Tokens with **URL restrictions** for
-the WordPress site. For the local dev server, either add
-`http://localhost:8080` to the allowed URLs or use a separate dev token.
+the site: `https://map.gallatindemocrats.com` and
+`https://gallatin-county-democrats.github.io`. Save it in GitHub as the
+`MAPBOX_TOKEN` Actions secret (see the README). For the local dev server, either add
+`http://localhost:8080` to the allowed URLs or use a separate dev token in
+`dev/config.local.json`.

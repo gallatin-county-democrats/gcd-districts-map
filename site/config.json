@@ -1,0 +1,18 @@
+{
+  "styleUrl": "mapbox://styles/gallatindemocrats/cmv08vr8t001g01sm9t0z2ovm",
+  "tilesets": {
+    "counties": "gallatindemocrats.xl5ysne4eldd",
+    "precincts": "gallatindemocrats.ojqcd6gv1bwu",
+    "house": "gallatindemocrats.q4wkor80rd54",
+    "senate": "gallatindemocrats.dgbqjqwbb96c",
+    "congress": "gallatindemocrats.vc1avqxqckt6"
+  },
+  "sheetUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQIKb3HE5akzQYhCFiTNRUQE9rfLJnVl75mavNKVG1dZ4gMAesLQR6x3al1jq0TV4wuTpmSEpGl4eMH/pub?gid=0&single=true&output=csv",
+  "homeCounty": "Gallatin",
+  "homeCongress": "1",
+  "electionYear": 2026,
+  "knownDistricts": { "house": "57, 59-69, 77", "senate": "29-35, 39" },
+  "bounds": [-111.81, 44.47, -110.78, 46.2],
+  "voterLookupUrl": "https://prodvoterportal.mt.gov/",
+  "writeInText": "{name} is a write-in candidate, so the name won't be printed on your ballot. To vote for {name}, fill in the oval next to the write-in line for this race and write \"{name}\"."
+}

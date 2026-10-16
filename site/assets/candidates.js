@@ -1,9 +1,9 @@
 /**
- * Candidate sheet rules, shared by the map page and the WordPress admin preview.
+ * Candidate sheet rules, shared by the map page and scripts/publish_candidates.js.
  *
  * Input is the raw Sheet rows (objects keyed by lowercase column header).
  * normalize() turns them into display-ready candidates plus a list of issues
- * for the Sync preview; forResult() picks the candidates for a looked-up address.
+ * for the publish preview; forResult() picks the candidates for a looked-up address.
  */
 (function (root) {
   'use strict';

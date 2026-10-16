@@ -1,6 +1,6 @@
 /**
- * District lookup map. Reads window.GCD_DM_CONFIG (built by the plugin, or by
- * dev/server.py) and renders into #gcd-dm-root.
+ * District lookup map. Reads window.GCD_DM_CONFIG (config.js, written by
+ * scripts/build_site.py or dev/server.py) and renders into #gcd-dm-root.
  *
  * All map styling lives in the Mapbox Studio style. This code only:
  *  - shows one district group at a time (Studio layer groups named
@@ -318,12 +318,4 @@
   }
 
   barEl.innerHTML = '<p class="gcd-dm-hint">Search for an address or tap the map to see your districts and Democratic candidates.</p>';
-
-  // --- Let the WordPress page size the iframe to fit -------------------------
-
-  if (window.parent !== window && 'ResizeObserver' in window) {
-    new ResizeObserver(function () {
-      window.parent.postMessage({ type: 'gcd-dm-height', height: Math.ceil(document.body.scrollHeight) }, location.origin);
-    }).observe(document.body);
-  }
 })();
