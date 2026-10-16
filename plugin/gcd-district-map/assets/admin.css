@@ -1,0 +1,9 @@
+.gcd-dm-admin .gcd-dm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0; }
+.gcd-dm-admin .gcd-dm-inline-form { display: inline-flex; gap: 8px; align-items: center; margin: 0; }
+.gcd-dm-admin .gcd-dm-or { color: #646970; }
+.gcd-dm-admin .gcd-dm-pending { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 4px 16px; margin: 16px 0 24px; max-width: 1100px; }
+.gcd-dm-admin #gcd-dm-preview table { margin: 12px 0; }
+.gcd-dm-admin .gcd-dm-badge { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; background: #f0c33c; color: #1d2327; }
+.gcd-dm-admin .gcd-dm-issues .is-error .gcd-dm-badge { background: #d63638; color: #fff; }
+.gcd-dm-admin details { margin: 12px 0 24px; max-width: 1100px; }
+.gcd-dm-admin summary { cursor: pointer; }
