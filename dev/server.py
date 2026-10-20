@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""Local preview of the district map, without WordPress.
+"""Local preview of the district map.
 
-    python3 dev/server.py            # http://0.0.0.0:8080
+    python3 dev/server.py                # http://0.0.0.0:8080
     python3 dev/server.py --port 9000
+    python3 dev/server.py --live-sheet   # candidates straight from the Sheet
 
-  /         the map page, exactly as the plugin serves it (assets are read
-            fresh from plugin/gcd-district-map/assets on every reload)
-  /embed    the map inside an auto-sizing iframe, like the [gcd_district_map]
-            shortcode puts it on a WordPress page
+Serves site/ as GitHub Pages would, with files read fresh on every reload and
+config.js built on the fly, as scripts/build_site.py does for a deploy.
 
-With "localLookup": true in the config, address lookups are answered from
+Settings come from site/config.json, with the Mapbox token (and any overrides)
+from dev/config.local.json (copy dev/config.example.json). Candidates come
+from site/candidates.json (what's published), or with --live-sheet from the
+Sheet on every reload, to check edits before running "Publish candidates".
+
+With "localLookup": true in the local config, address lookups are answered from
 tilesets/*.geojson (run scripts/prepare_tilesets.py first) instead of Mapbox
 Tilequery, so the results bar and candidates work before anything is uploaded.
-
-Settings come from dev/config.local.json (copy dev/config.example.json).
-Candidates are fetched from the Sheet's published CSV on every page load, so
-Sheet edits show up on reload; no Publish step here.
 """
 
 import argparse
@@ -29,65 +29,13 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+import build_site  # noqa: E402
+
+SITE = build_site.SITE
 TILESETS = ROOT / "tilesets"
-ASSETS = ROOT / "plugin" / "gcd-district-map" / "assets"
 CONFIG = ROOT / "dev" / "config.local.json"
 EXAMPLE = ROOT / "dev" / "config.example.json"
-
-# Keep in sync with GCD_DM_MAPBOX_GL_URL / GCD_DM_GEOCODER_URL in gcd-district-map.php.
-MAPBOX_GL = "https://api.mapbox.com/mapbox-gl-js/v3.9.0"
-GEOCODER = "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.3"
-
-PAGE = """<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>District lookup map (dev)</title>
-<link rel="stylesheet" href="{gl}/mapbox-gl.css">
-<link rel="stylesheet" href="{geocoder}/mapbox-gl-geocoder.css">
-<link rel="stylesheet" href="/assets/map.css">
-<style>
-  /* Dev only: frame the map like a page column when opened directly (not inside /embed's iframe). */
-  .gcd-dev-standalone #gcd-dm-root {{ max-width: 1000px; margin: 0 auto; padding: 24px 16px; }}
-</style>
-<script>if (window.top === window) document.documentElement.classList.add('gcd-dev-standalone');</script>
-</head>
-<body>
-<div id="gcd-dm-root"></div>
-<script>window.GCD_DM_CONFIG = {config};</script>
-<script src="{gl}/mapbox-gl.js"></script>
-<script src="{geocoder}/mapbox-gl-geocoder.min.js"></script>
-<script src="/assets/candidates.js"></script>
-<script src="/assets/map.js"></script>
-</body>
-</html>
-"""
-
-# Mirrors the shortcode output in includes/embed.php, inside a stand-in page.
-EMBED = """<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Embed test (dev)</title>
-<style>
-  body { margin: 0; font: 17px/1.6 Georgia, serif; background: #eee; }
-  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; background: #fff; }
-</style>
-</head>
-<body>
-<main>
-<h1>Find your districts</h1>
-<p>Stand-in for a WordPress page. The map below is in an iframe that resizes to fit, like the shortcode.</p>
-<iframe id="gcd-dm-frame-1" class="gcd-dm-frame" src="/" title="District and candidate lookup map" allow="geolocation" style="display:block;width:100%;height:1000px;border:0"></iframe>
-<script>(function(f){window.addEventListener("message",function(e){if(e.source===f.contentWindow&&e.data&&e.data.type==="gcd-dm-height"){f.style.height=e.data.height+"px";}});})(document.getElementById("gcd-dm-frame-1"));</script>
-<p>Text after the map.</p>
-</main>
-</body>
-</html>
-"""
-
 
 class LocalLookup:
     """Point-in-polygon over the prepared GeoJSON, answering like Mapbox Tilequery."""
@@ -138,7 +86,7 @@ def load_config():
 
 
 def fetch_rows(url):
-    """Same shape as gcd_dm_parse_csv(): list of {lowercase header: value}."""
+    """Same shape as scripts/publish_candidates.js: list of {lowercase header: value}."""
     with urllib.request.urlopen(url, timeout=20) as res:
         text = res.read().decode("utf-8-sig")
     reader = csv.reader(io.StringIO(text))
@@ -161,49 +109,50 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?", 1)[0]
-        if path == "/":
-            return self.map_page()
+        if path == "/config.js":
+            return self.send(200, build_site.config_js(self.server.config()), "text/javascript; charset=utf-8")
         if path.startswith("/tilequery/") and LOOKUP:
             lng, lat = path[len("/tilequery/"):].removesuffix(".json").split(",")
             return self.send(200, json.dumps(LOOKUP.query(float(lng), float(lat))), "application/json")
-        if path == "/embed":
-            return self.send(200, EMBED, "text/html; charset=utf-8")
-        if path.startswith("/assets/"):
-            file = (ASSETS / path[len("/assets/"):]).resolve()
-            if file.is_file() and ASSETS in file.parents:
-                ctype = mimetypes.guess_type(file.name)[0] or "application/octet-stream"
-                return self.send(200, file.read_bytes(), ctype)
+        file = (SITE / (path.lstrip("/") or "index.html")).resolve()
+        if file.is_file() and SITE in file.parents and file.name not in build_site.SOURCE_ONLY:
+            ctype = mimetypes.guess_type(file.name)[0] or "application/octet-stream"
+            return self.send(200, file.read_bytes(), ctype)
         self.send(404, "Not found", "text/plain")
-
-    def map_page(self):
-        config = load_config()
-        sheet_url = config.pop("sheetUrl", "")
-        if config.pop("localLookup", False):
-            config["tilequeryUrl"] = "/tilequery/{lng},{lat}.json"
-        rows = []
-        if sheet_url:
-            try:
-                rows = fetch_rows(sheet_url)
-            except Exception as err:  # keep the map usable without candidates
-                print(f"Couldn't fetch the Sheet: {err}", file=sys.stderr)
-        config["candidates"] = {"rows": rows}
-        # Same escaping as wp_json_encode(..., JSON_HEX_TAG | JSON_HEX_AMP).
-        payload = json.dumps(config).replace("<", "\\u003C").replace(">", "\\u003E").replace("&", "\\u0026")
-        self.send(200, PAGE.format(gl=MAPBOX_GL, geocoder=GEOCODER, config=payload), "text/html; charset=utf-8")
 
     def log_message(self, fmt, *args):
         sys.stderr.write("%s %s\n" % (self.command, self.path))
 
 
+class Server(ThreadingHTTPServer):
+    live_sheet = False
+
+    def config(self):
+        local = load_config()
+        token = local.pop("token", "")
+        overrides = {k: v for k, v in local.items() if k not in ("localLookup", "sheetUrl")}
+        if local.get("localLookup"):
+            overrides["tilequeryUrl"] = "/tilequery/{lng},{lat}.json"
+        rows = build_site.published_rows()
+        if self.live_sheet:
+            try:
+                rows = fetch_rows(json.loads((SITE / "config.json").read_text())["sheetUrl"])
+            except Exception as err:  # keep the map usable without candidates
+                print(f"Couldn't fetch the Sheet: {err}", file=sys.stderr)
+        return build_site.client_config(token, rows, overrides)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument("--live-sheet", action="store_true", help="read candidates from the Sheet instead of site/candidates.json")
     args = parser.parse_args()
     global LOOKUP
     if load_config().get("localLookup"):  # also fails fast if the config is missing
         LOOKUP = LocalLookup()
-    server = ThreadingHTTPServer(("0.0.0.0", args.port), Handler)
-    print(f"District map dev server on http://0.0.0.0:{args.port}/  (embed test: /embed)")
+    server = Server(("0.0.0.0", args.port), Handler)
+    server.live_sheet = args.live_sheet
+    print(f"District map dev server on http://0.0.0.0:{args.port}/")
     server.serve_forever()
 
 

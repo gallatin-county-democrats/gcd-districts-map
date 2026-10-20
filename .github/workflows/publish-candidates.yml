@@ -1,0 +1,62 @@
+# Actions → Publish candidates → Run workflow.
+#   preview: fetch the Sheet and show what would change (in the run summary). Nothing goes live.
+#   publish: same, then save site/candidates.json to main and redeploy the map.
+name: Publish candidates
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: preview shows what would change; publish puts it on the map
+        type: choice
+        options: [preview, publish]
+        default: preview
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: candidates
+  cancel-in-progress: false
+
+jobs:
+  sheet:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Only publish from main
+        if: inputs.mode == 'publish' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Choose the main branch in 'Use workflow from' to publish."
+          exit 1
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Fetch and check the Sheet
+        run: node scripts/publish_candidates.js ${{ inputs.mode == 'publish' && '--write' || '' }}
+      - name: Save to main
+        id: commit
+        if: inputs.mode == 'publish'
+        run: |
+          if git diff --quiet -- site/candidates.json; then
+            echo "Candidates are unchanged; nothing to publish." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Publish candidates from the Sheet" -- site/candidates.json
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: sheet
+    if: needs.sheet.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: main
+    secrets: inherit
