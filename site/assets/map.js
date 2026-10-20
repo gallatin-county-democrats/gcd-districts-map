@@ -276,9 +276,20 @@
       .map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
   }
 
+  // A photo that fails to load (moved, deleted, typo) falls back to initials.
+  candidatesEl.addEventListener('error', function (e) {
+    var img = e.target;
+    if (img.tagName !== 'IMG' || !img.classList.contains('gcd-dm-photo')) return;
+    var span = document.createElement('span');
+    span.className = 'gcd-dm-photo gcd-dm-initials';
+    span.setAttribute('aria-hidden', 'true');
+    span.textContent = img.dataset.initials;
+    img.replaceWith(span);
+  }, true);
+
   function card(c) {
     var photo = c.photo
-      ? '<img class="gcd-dm-photo" src="' + esc(c.photo) + '" alt="" loading="lazy">'
+      ? '<img class="gcd-dm-photo" src="' + esc(c.photo) + '" alt="" loading="lazy" data-initials="' + esc(initials(c.name)) + '">'
       : '<span class="gcd-dm-photo gcd-dm-initials" aria-hidden="true">' + esc(initials(c.name)) + '</span>';
     var site = c.website
       ? '<a href="' + esc(c.website) + '" target="_blank" rel="noopener">Website</a>'
