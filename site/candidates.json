@@ -5,7 +5,7 @@
     "district": "Montana",
     "candidate": "Alani Bankhead",
     "website": "https://alaniformt.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2018/07/611659693_122109517677168482_2979152514491672170_n-e1786761131795.jpg",
+    "photo_url": "alani-bankhead.jpg",
     "order": "50",
     "next_election_year": "2026"
   },
@@ -15,7 +15,7 @@
     "district": "MT-01",
     "candidate": "Sam Forstag",
     "website": "https://samformontana.com",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2018/07/611905681_10164346370094560_7014535526436351982_n-e1786761890248.jpg",
+    "photo_url": "sam-forstag.jpg",
     "order": "40",
     "next_election_year": "2026"
   },
@@ -25,7 +25,7 @@
     "district": "29",
     "candidate": "Scott Rosenzweig",
     "website": "https://www.rosenzweigformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/02/IMG_7373-e1786409083638.jpg",
+    "photo_url": "scott-rosenzweig.jpg",
     "order": "5",
     "next_election_year": "2026"
   },
@@ -35,7 +35,7 @@
     "district": "30",
     "candidate": "Cora Neumann",
     "website": "https://coraformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/05/unnamed-1.jpg",
+    "photo_url": "cora-neumann.jpg",
     "order": "5",
     "next_election_year": ""
   },
@@ -45,7 +45,7 @@
     "district": "31",
     "candidate": "Kathleen Williams",
     "website": "https://www.kathleenformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2018/07/KathleenWilliams_2025-e1788961809233.png",
+    "photo_url": "kathleen-williams.jpg",
     "order": "5",
     "next_election_year": "2026"
   },
@@ -55,7 +55,7 @@
     "district": "32",
     "candidate": "Kelly Kortum",
     "website": "https://kellyformt.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2020/06/Kelly-Kortum-300x300-1.jpg",
+    "photo_url": "kelly-kortum.jpg",
     "order": "5",
     "next_election_year": "2026"
   },
@@ -64,8 +64,8 @@
     "race_type": "mt_senate",
     "district": "33",
     "candidate": "Chris Pope",
-    "website": "https://www.popeformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2018/10/Chris-Pope-600.jpg",
+    "website": "",
+    "photo_url": "chris-pope.jpg",
     "order": "5",
     "next_election_year": ""
   },
@@ -75,7 +75,7 @@
     "district": "34",
     "candidate": "Carl Anderson",
     "website": "https://www.carlandersonformt.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/03/MG_0432-min-1-scaled-e1786408387921.jpg",
+    "photo_url": "carl-anderson.jpg",
     "order": "5",
     "next_election_year": "2026"
   },
@@ -85,7 +85,7 @@
     "district": "57",
     "candidate": "Becky Edwards",
     "website": "https://www.beckyformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/02/Capture-e1711573505148.png",
+    "photo_url": "becky-edwards.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -105,7 +105,7 @@
     "district": "59",
     "candidate": "Katie Fire Thunder",
     "website": "https://firethunderformontana.com",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2026/05/KatieFireThunder_Portrait-e1789399340660.jpg",
+    "photo_url": "katie-fire-thunder.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -115,7 +115,7 @@
     "district": "60",
     "candidate": "Alanah Griffith",
     "website": "http://griffithformt.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/05/Portrait72dpi-e1719435047747.jpg",
+    "photo_url": "alanah-griffith.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -125,7 +125,7 @@
     "district": "61",
     "candidate": "Rio Roland",
     "website": "http://rioformt.com",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/03/431243737_122135162492114155_6397507832398947099_n.jpg",
+    "photo_url": "rio-roland.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -135,7 +135,7 @@
     "district": "62",
     "candidate": "Josh Seckinger",
     "website": "https://www.seckingerformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/03/image0-2.jpeg",
+    "photo_url": "josh-seckinger.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -145,7 +145,7 @@
     "district": "63",
     "candidate": "Peter Strand",
     "website": "https://www.strandformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/02/PS-e1786408526776.png",
+    "photo_url": "peter-strand.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -155,7 +155,7 @@
     "district": "64",
     "candidate": "Brady Bremer",
     "website": "https://www.bremerformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/03/Brady8.jpg",
+    "photo_url": "brady-bremer.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -165,7 +165,7 @@
     "district": "65",
     "candidate": "Brian Close",
     "website": "https://brianclose4montana.net/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/03/BC-e1711572031104.png",
+    "photo_url": "brian-close.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -175,7 +175,7 @@
     "district": "66",
     "candidate": "Eric Matthews",
     "website": "http://matthewsformt.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/05/278872051_131740516103370_4673008183103486350_n.jpg",
+    "photo_url": "eric-matthews.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -185,7 +185,7 @@
     "district": "67",
     "candidate": "Logan Henke",
     "website": "https://www.loganformontana.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2020/06/LoganHenke-scaled-e1788961190933.jpg",
+    "photo_url": "logan-henke.jpg",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -195,7 +195,7 @@
     "district": "68",
     "candidate": "Jocelyn Kent",
     "website": "",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2026/01/cropped-gallatin-dems-social-logo.png",
+    "photo_url": "",
     "order": "1",
     "next_election_year": "2026"
   },
@@ -205,7 +205,7 @@
     "district": "1",
     "candidate": "Zach Brown",
     "website": "http://www.brownformontana.org/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2018/07/272715574_354274726513088_6322068777667038308_n.jpg",
+    "photo_url": "zach-brown.jpg",
     "order": "10",
     "next_election_year": "2026"
   },
@@ -215,7 +215,7 @@
     "district": "3",
     "candidate": "Ryan Finn",
     "website": "https://www.writefinnin.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/05/Screenshot-2026-06-30-185247-e1786408242158.png",
+    "photo_url": "ryan-finn.jpg",
     "order": "10",
     "next_election_year": "2026"
   },
@@ -225,7 +225,7 @@
     "district": "Gallatin County",
     "candidate": "Audrey Cromwell",
     "website": "http://www.audreycromwell.com",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/04/Audrey-Cromwell-County-Attorney--e1682463544414.jpeg",
+    "photo_url": "audrey-cromwell.jpg",
     "order": "12",
     "next_election_year": "2026"
   },
@@ -235,7 +235,7 @@
     "district": "Gallatin County",
     "candidate": "Eric Semerad",
     "website": "",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/04/20220906_133457_3-1.jpg",
+    "photo_url": "eric-semerad.jpg",
     "order": "14",
     "next_election_year": "2026"
   },
@@ -245,7 +245,7 @@
     "district": "Gallatin County",
     "candidate": "J. Garrett Grimm",
     "website": "http://www.garrettgrimm.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/02/LLR50330-edit-2.jpg",
+    "photo_url": "j-garrett-grimm.jpg",
     "order": "16",
     "next_election_year": "2026"
   },
@@ -255,7 +255,7 @@
     "district": "Gallatin County",
     "candidate": "Stephen Ball",
     "website": "",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2024/06/IMG_9614-e1786407358804.jpg",
+    "photo_url": "stephen-ball.jpg",
     "order": "18",
     "next_election_year": "2026"
   },
@@ -264,8 +264,8 @@
     "race_type": "superintendent_of_schools",
     "district": "Gallatin County",
     "candidate": "John Nielson",
-    "website": "https://nielsonforgallatin.com/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2022/08/080421-copp-DSC06404-web-e1682463440343.jpg",
+    "website": "",
+    "photo_url": "john-nielson.jpg",
     "order": "20",
     "next_election_year": "2026"
   },
@@ -275,7 +275,7 @@
     "district": "Gallatin County",
     "candidate": "Jill Therrien",
     "website": "",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2026/01/gallatin-dems-social-logo.png",
+    "photo_url": "",
     "order": "22",
     "next_election_year": "2026"
   },
@@ -284,8 +284,8 @@
     "race_type": "county_clerk_of_district_court",
     "district": "Gallatin County",
     "candidate": "Sandy Erhardt",
-    "website": "https://www.sandy4clerkofcourt.org/",
-    "photo_url": "https://gallatindemocrats.com/wp-content/uploads/2020/06/5f88cb51defa7.image_-e1786411936441.jpg",
+    "website": "",
+    "photo_url": "sandy-erhardt.jpg",
     "order": "",
     "next_election_year": ""
   }
