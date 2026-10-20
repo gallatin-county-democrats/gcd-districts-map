@@ -37,10 +37,19 @@ is ignored and never leaves the Sheet.
 | `race_type` | `us_senate`, `us_house`, `mt_senate`, `mt_house`, or anything starting with `county_` (countywide). Other values are flagged and not shown |
 | `district` | Number for House, Senate and U.S. House (`64`, `MT-01`). For county races, a number is shown as a residency district (commissioners); otherwise ignored |
 | `candidate` | Name as it should appear (and, for write-ins, as voters should write it) |
-| `website`, `photo_url` | Full `https://` links. No photo shows initials |
+| `website` | Full `https://` link |
+| `photo_url` | A file name from `site/photos/` (e.g. `chris-pope.jpg`), or a full `https://` link. No photo, or one that fails to load, shows initials |
 | `order` | Optional sort order within the level (federal, legislature, county) |
 | `next_election_year` | Equal to `electionYear` in `site/config.json` means on the ballot; anything else means current official |
 | `write_in` | `TRUE` for write-in candidates; shows the write-in callout |
+
+## Candidate photos
+
+Photos live in `site/photos/`, named like `first-last.jpg`. To add one:
+crop it square, resize to about 256×256 px, save as JPEG, then on GitHub open
+`site/photos/` → **Add file → Upload files** and commit to `main`. Put the file
+name in the Sheet's `photo_url` column and run **Publish candidates**. The
+preview warns if a file name in the Sheet doesn't match a file in `site/photos/`.
 
 ## Settings
 

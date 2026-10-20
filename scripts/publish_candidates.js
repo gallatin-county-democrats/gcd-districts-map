@@ -19,6 +19,7 @@ const GCDCandidates = require('../site/assets/candidates.js');
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG = path.join(ROOT, 'site', 'config.json');
 const PUBLISHED = path.join(ROOT, 'site', 'candidates.json');
+const PHOTOS = path.join(ROOT, 'site', 'photos');
 
 // Only these columns are published (see README). Anything else in the Sheet,
 // such as notes or contact details, stays out of the public repo and site.
@@ -135,6 +136,19 @@ function report(opts, result, previous) {
   return md;
 }
 
+/** photo_url can name a file in site/photos/; flag names with no such file. */
+function checkPhotoFiles(rows, issues) {
+  const files = fs.existsSync(PHOTOS) ? fs.readdirSync(PHOTOS) : [];
+  rows.forEach((row, i) => {
+    const name = (row.photo_url || '').trim();
+    if (GCDCandidates.PHOTO_FILE.test(name) && !files.includes(name)) {
+      issues.push({ row: i + 2, name: row.candidate, level: 'warning',
+        message: `photo_url "${name}" isn't in site/photos/; initials shown instead.` });
+    }
+  });
+  issues.sort((a, b) => a.row - b.row);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const write = args.includes('--write');
@@ -144,7 +158,9 @@ async function main() {
   const text = csvIndex !== -1 ? fs.readFileSync(args[csvIndex + 1], 'utf8') : await fetchSheet(opts.sheetUrl);
   const rows = sheetRows(text);
   const previousRows = fs.existsSync(PUBLISHED) ? JSON.parse(fs.readFileSync(PUBLISHED, 'utf8')) : [];
-  const md = report(opts, GCDCandidates.normalize(rows, opts), GCDCandidates.normalize(previousRows, opts).candidates);
+  const result = GCDCandidates.normalize(rows, opts);
+  checkPhotoFiles(rows, result.issues);
+  const md = report(opts, result, GCDCandidates.normalize(previousRows, opts).candidates);
 
   const heading = write ? '## Published candidates\n\n' : '## Candidate preview (not published)\n\n' +
     '_Nothing changed on the map. To publish, run this action again and choose **publish**._\n\n';

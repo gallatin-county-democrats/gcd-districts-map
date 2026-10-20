@@ -22,6 +22,7 @@
   var DISTRICT_NAMES = { house: 'House District', senate: 'Senate District', congress: 'Congressional District' };
   var TRUTHY = /^(true|yes|y|x|1)$/i;
   var IMAGE = /\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i;
+  var PHOTO_FILE = /^[a-z0-9_-]+\.(jpe?g|png|webp)$/i; // a file in site/photos/
 
   function raceInfo(type) {
     if (RACES[type]) return RACES[type];
@@ -50,6 +51,11 @@
 
   function httpUrl(value) {
     return /^https?:\/\//i.test(value) ? value : '';
+  }
+
+  /** A full link, or the name of a file in site/photos/ ("chris-pope.jpg"). */
+  function photoUrl(value) {
+    return httpUrl(value) || (PHOTO_FILE.test(value) ? 'photos/' + value : '');
   }
 
   function officeLabel(c) {
@@ -118,14 +124,14 @@
       var websiteRaw = get('website');
       var photoRaw = get('photo_url');
       var website = httpUrl(websiteRaw);
-      var photo = httpUrl(photoRaw);
+      var photo = photoUrl(photoRaw);
       if (IMAGE.test(websiteRaw) && photoRaw && !IMAGE.test(photoRaw)) {
         issue('warning', 'website and photo_url look swapped.');
       } else if (IMAGE.test(websiteRaw)) {
         issue('warning', 'website points to an image file.');
       }
       if (websiteRaw && !website) issue('warning', 'website isn\'t a full http(s) link; not shown.');
-      if (photoRaw && !photo) issue('warning', 'photo_url isn\'t a full http(s) link; not shown.');
+      if (photoRaw && !photo) issue('warning', 'photo_url isn\'t a full http(s) link or a photo file name; not shown.');
 
       var yearRaw = get('next_election_year');
       var year = /^\d{4}$/.test(yearRaw) ? parseInt(yearRaw, 10) : null;
@@ -184,7 +190,7 @@
     });
   }
 
-  var api = { normalize: normalize, forResult: forResult, parseRanges: parseRanges };
+  var api = { normalize: normalize, forResult: forResult, parseRanges: parseRanges, PHOTO_FILE: PHOTO_FILE };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GCDCandidates = api;
 })(this);
