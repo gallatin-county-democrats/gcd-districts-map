@@ -80,8 +80,8 @@ html, body {
 .gcd-dm-layers button[aria-checked="true"] { background: var(--gcd-copper-light); color: var(--gcd-navy); font-weight: 600; }
 .gcd-dm-layers button:focus-visible,
 .gcd-dm-chips button:focus-visible { outline: 3px solid var(--gcd-cream); outline-offset: -3px; }
-.gcd-dm-precinct-toggle { font-size: 14px; color: var(--gcd-ink); display: flex; gap: 6px; align-items: center; cursor: pointer; }
-.gcd-dm-precinct-toggle input { accent-color: var(--gcd-copper); width: 16px; height: 16px; margin: 0; }
+.gcd-dm-toggle { font-size: 14px; color: var(--gcd-ink); display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.gcd-dm-toggle input { accent-color: var(--gcd-copper); width: 16px; height: 16px; margin: 0; }
 
 /* Map. Fixed pixel heights: vh units inside an auto-sized iframe would grow forever. */
 .gcd-dm-map {
@@ -132,6 +132,84 @@ html, body {
 .gcd-dm-hint { margin: 0; color: var(--gcd-muted); }
 .gcd-dm-chips + .gcd-dm-hint { margin-top: 10px; }
 .gcd-dm-error { margin: 0; color: #ffb4a6; }
+
+/* Polling place, in the results bar and pinned on the map */
+.gcd-dm-polling {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--gcd-copper);
+  border-radius: 8px;
+  background: var(--gcd-bg);
+}
+.gcd-dm-polling p { margin: 0; }
+.gcd-dm-polling-name { font-weight: 600; font-size: 17px; }
+.gcd-dm-polling-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px !important; font-size: 14px; }
+.gcd-dm-polling-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px !important; }
+.gcd-dm-button {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--gcd-copper-light);
+  color: var(--gcd-navy);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.gcd-dm-button:hover { background: var(--gcd-cream); }
+.gcd-dm-button:focus-visible { outline: 3px solid var(--gcd-cream); outline-offset: 2px; }
+.gcd-dm-polling-source {
+  margin-top: 8px !important;
+  padding-top: 8px;
+  border-top: 1px solid var(--gcd-line);
+  font-size: 13px;
+}
+.gcd-dm-polling-source a { color: var(--gcd-copper-light); }
+.gcd-dm-polling-source a:hover { color: var(--gcd-cream); }
+.gcd-dm-polling-links a,
+.gcd-dm-polling-show {
+  color: var(--gcd-copper-light);
+  font: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.gcd-dm-polling-links a:hover,
+.gcd-dm-polling-show:hover { color: var(--gcd-cream); }
+.gcd-dm-polling-pin {
+  padding-bottom: 8px; /* room for the pointer, so the tip sits on the place */
+  text-decoration: none;
+  cursor: pointer;
+}
+.gcd-dm-polling-pin:hover span,
+.gcd-dm-polling-pin:focus-visible span { background: var(--gcd-navy-raised); text-decoration: underline; }
+.gcd-dm-polling-pin:focus-visible { outline: none; }
+.gcd-dm-polling-pin:focus-visible span { outline: 3px solid var(--gcd-cream); outline-offset: 1px; }
+.gcd-dm-polling-pin span {
+  position: relative;
+  display: block;
+  padding: 4px 9px;
+  border: 2px solid var(--gcd-copper);
+  border-radius: 6px;
+  background: var(--gcd-navy);
+  color: var(--gcd-cream);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 220px; /* long names wrap instead of covering a phone-width map */
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.gcd-dm-polling-pin span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-bottom: 0;
+  border-top: 9px solid var(--gcd-copper);
+}
 
 /* Candidates */
 .gcd-dm-section h2 { font-size: 22px; margin: 12px 0 4px; color: var(--gcd-cream); }
