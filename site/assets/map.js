@@ -290,6 +290,12 @@
       '<p class="gcd-dm-polling-links">' +
       '<button type="button" class="gcd-dm-polling-show">Show on map</button>' +
       '<a href="' + esc(directions) + '" target="_blank" rel="noopener">Directions</a></p>' +
+      (cfg.pollingPlacesUrl
+        ? '<p class="gcd-dm-polling-source">Polling place data from Gallatin County Elections Office. ' +
+          'Always check their website for the most up-to-date information: ' +
+          '<a href="' + esc(cfg.pollingPlacesUrl) + '" target="_blank" rel="noopener">' +
+          esc(cfg.pollingPlacesUrl.replace(/^https?:\/\/(www\.)?/, '')) + '</a></p>'
+        : '') +
       '</div>';
   }
 

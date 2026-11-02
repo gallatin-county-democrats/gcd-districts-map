@@ -14,5 +14,6 @@
   "knownDistricts": { "house": "57, 59-69, 77", "senate": "29-35, 39" },
   "bounds": [-111.81, 44.47, -110.78, 46.2],
   "voterLookupUrl": "https://prodvoterportal.mt.gov/",
+  "pollingPlacesUrl": "https://www.gallatinmt.gov/380/Elections",
   "writeInText": "{name} is a write-in candidate, so the name won't be printed on your ballot. To vote for {name}, fill in the oval next to the write-in line for this race and write \"{name}\"."
 }
