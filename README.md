@@ -72,7 +72,10 @@ It geocodes each new place, keeps the saved coordinates of places already in
 the file, and lists any precincts on the map that have no polling place. Check
 the new pins on the map, then commit `site/polling_places.json`. To move a pin
 that landed in the wrong spot, edit its `coordinates` (`[longitude, latitude]`)
-in the file.
+in the file. The **Deploy site** Action checks the file. If an entry is
+malformed (a missing field, coordinates outside the map or swapped, or a
+precinct listed twice), the build stops with a message naming the place, and
+the site already online stays as it was.
 
 ## Settings
 

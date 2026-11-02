@@ -37,7 +37,7 @@ def client_config(token, rows, overrides=None):
     config.update(overrides or {})
     config["token"] = token
     config["candidates"] = {"rows": rows}
-    config["pollingPlaces"] = polling_places()
+    config["pollingPlaces"] = polling_places(config["bounds"])
     return config
 
 
@@ -46,9 +46,35 @@ def published_rows():
     return json.loads(path.read_text()) if path.exists() else []
 
 
-def polling_places():
+def polling_places(bounds):
+    """The places in site/polling_places.json, checked so a hand-edit typo stops
+    the build instead of breaking address lookups on the live site."""
     path = SITE / "polling_places.json"
-    return json.loads(path.read_text())["places"] if path.exists() else []
+    if not path.exists():
+        return []
+    places = json.loads(path.read_text())["places"]
+    west, south, east, north = bounds
+    seen = {}
+    for i, place in enumerate(places, 1):
+        name = place.get("name") or f"place #{i}"
+        problem = lambda msg: ValueError(f"site/polling_places.json, {name}: {msg}")
+        for field in ("name", "address", "city"):
+            if not isinstance(place.get(field), str) or not place[field].strip():
+                raise problem(f'"{field}" is missing or empty.')
+        coords = place.get("coordinates")
+        if not (isinstance(coords, list) and len(coords) == 2 and all(isinstance(v, (int, float)) for v in coords)):
+            raise problem('"coordinates" must be [longitude, latitude].')
+        lng, lat = coords
+        if not (west <= lng <= east and south <= lat <= north):
+            raise problem(f"coordinates {coords} are outside the map bounds. Are longitude and latitude swapped?")
+        precincts = place.get("precincts")
+        if not (isinstance(precincts, list) and precincts and all(isinstance(p, str) and p for p in precincts)):
+            raise problem('"precincts" must be a non-empty list of precinct names.')
+        for precinct in precincts:
+            if precinct in seen:
+                raise problem(f"precinct {precinct} is also listed under {seen[precinct]}.")
+            seen[precinct] = name
+    return places
 
 
 def config_js(config):
@@ -77,7 +103,11 @@ def main():
     shutil.copytree(SITE, OUT, ignore=lambda d, names: [n for n in names if n in SOURCE_ONLY or n == ".DS_Store"])
 
     rows = published_rows()
-    (OUT / "config.js").write_text(config_js(client_config(token, rows)))
+    try:
+        config = client_config(token, rows)
+    except ValueError as err:
+        sys.exit(f"Build stopped: {err}")
+    (OUT / "config.js").write_text(config_js(config))
     index = OUT / "index.html"
     index.write_text(version_links(index.read_text(), OUT))
     print(f"_site/ built with {len(rows)} candidate rows")

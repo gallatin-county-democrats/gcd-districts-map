@@ -85,8 +85,17 @@
   // Precinct ("57A") -> polling place, from site/polling_places.json.
   var pollingByPrecinct = {};
   (cfg.pollingPlaces || []).forEach(function (place) {
-    place.precincts.forEach(function (p) { pollingByPrecinct[p] = place; });
+    (place.precincts || []).forEach(function (p) { pollingByPrecinct[p] = place; });
   });
+
+  // scripts/build_site.py checks polling_places.json, but if a bad entry slips
+  // through, lose only the polling place, not the districts and candidates.
+  function guardPolling(fn, fallback) {
+    try { return fn(); } catch (err) {
+      console.error('[district map] polling place', err);
+      return fallback;
+    }
+  }
 
   function pollingPinElement() {
     // A link to directions; text and href are set in showPollingPlace().
@@ -252,9 +261,9 @@
       if (seq !== lookupSeq) return;
       var result = interpret(features);
       setHighlights(result);
-      showPollingPlace(result && result.pollingPlace);
       renderBar(result);
       renderCandidates(result);
+      guardPolling(function () { showPollingPlace(result && result.pollingPlace); });
     }).catch(function (err) {
       if (seq !== lookupSeq) return;
       console.error('[district map]', err);
@@ -336,7 +345,7 @@
           '<span class="gcd-dm-chip-caption">' + esc(c.caption) + '</span>' +
           '<span class="gcd-dm-chip-value">' + esc(c.value) + '</span></button></li>';
       }).join('') + '</ul>' +
-      (r.pollingPlace ? pollingPlaceHtml(r.pollingPlace) : '') +
+      (r.pollingPlace ? guardPolling(function () { return pollingPlaceHtml(r.pollingPlace); }, '') : '') +
       (r.inHome ? '' : '<p class="gcd-dm-hint">This address is in ' + esc(r.countyLabel) +
         '. County races listed here are for ' + esc(cfg.homeCounty) + ' County only.</p>');
 
