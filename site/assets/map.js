@@ -6,6 +6,7 @@
  *  - shows one district group at a time (Studio layer groups named
  *    house / senate / congress, plus precincts as a checkbox), and
  *  - sets the filter on each "<group>-highlight" layer to the visitor's district.
+ * The address and polling place pins are HTML markers, styled in map.css.
  */
 /* global mapboxgl, MapboxGeocoder, GCDCandidates */
 (function () {
@@ -77,6 +78,22 @@
   var geolocate = new mapboxgl.GeolocateControl({ showUserLocation: false, fitBoundsOptions: { maxZoom: 13 } });
   map.addControl(geolocate, 'top-right');
   var marker = new mapboxgl.Marker({ color: '#c7753b' });
+  var pollingMarker = new mapboxgl.Marker({ element: pollingPinElement(), anchor: 'bottom' });
+
+  // Precinct ("57A") -> polling place, from site/polling_places.json.
+  var pollingByPrecinct = {};
+  (cfg.pollingPlaces || []).forEach(function (place) {
+    place.precincts.forEach(function (p) { pollingByPrecinct[p] = place; });
+  });
+
+  function pollingPinElement() {
+    var el = document.createElement('div');
+    el.className = 'gcd-dm-polling-pin';
+    el.innerHTML = '<span>Polling place</span>';
+    // Don't let a tap on the pin reach the map, which would look up the polling place's own address.
+    el.addEventListener('click', function (e) { e.stopPropagation(); });
+    return el;
+  }
 
   var geocoder = new MapboxGeocoder({
     accessToken: cfg.token,
@@ -207,6 +224,7 @@
       precinct: precinct,
       house: (precinct && precinct.house) || (first('house') || {}).district || null,
       senate: (precinct && precinct.senate) || (first('senate') || {}).district || null,
+      pollingPlace: (inHome && precinct && pollingByPrecinct[precinct.precinct]) || null,
       // The whole home county is in one congressional district; the layer's
       // edges have slivers along the county line, so don't trust the point lookup there.
       congress: inHome && cfg.homeCongress ? String(cfg.homeCongress) : (first('congress') || {}).district || null,
@@ -220,11 +238,13 @@
     map.flyTo({ center: point, zoom: Math.max(map.getZoom(), zoom || 0) });
     barEl.innerHTML = '<p class="gcd-dm-hint">Looking up districts…</p>';
     candidatesEl.innerHTML = '';
+    pollingMarker.remove();
 
     tilequery(point[0], point[1]).then(function (features) {
       if (seq !== lookupSeq) return;
       var result = interpret(features);
       setHighlights(result);
+      showPollingPlace(result && result.pollingPlace);
       renderBar(result);
       renderCandidates(result);
     }).catch(function (err) {
@@ -234,7 +254,33 @@
     });
   }
 
+  // Pin the polling place and fit the map to it and the looked-up address.
+  function showPollingPlace(place) {
+    if (!place) { pollingMarker.remove(); return; }
+    pollingMarker.setLngLat(place.coordinates).addTo(map);
+    fitToPollingPlace(place);
+  }
+
+  function fitToPollingPlace(place) {
+    var b = new mapboxgl.LngLatBounds(lastPoint, lastPoint).extend(place.coordinates);
+    map.fitBounds(b, { padding: { top: 60, bottom: 30, left: 40, right: 40 }, maxZoom: 14 });
+  }
+
   // --- Results ---------------------------------------------------------------
+
+  function pollingPlaceHtml(place) {
+    var where = place.address + ', ' + place.city;
+    var directions = 'https://www.google.com/maps/dir/?api=1&destination=' +
+      encodeURIComponent(place.name + ', ' + place.address + ', ' + place.city.split('/')[0] + ', MT');
+    return '<div class="gcd-dm-polling">' +
+      '<p class="gcd-dm-chip-caption">Your Election Day polling place</p>' +
+      '<p class="gcd-dm-polling-name">' + esc(place.name) + '</p>' +
+      '<p class="gcd-dm-polling-address">' + esc(where) + '</p>' +
+      '<p class="gcd-dm-polling-links">' +
+      '<button type="button" class="gcd-dm-polling-show">Show on map</button>' +
+      '<a href="' + esc(directions) + '" target="_blank" rel="noopener">Directions</a></p>' +
+      '</div>';
+  }
 
   function renderBar(r) {
     if (!r) {
@@ -254,10 +300,14 @@
           '<span class="gcd-dm-chip-caption">' + esc(c.caption) + '</span>' +
           '<span class="gcd-dm-chip-value">' + esc(c.value) + '</span></button></li>';
       }).join('') + '</ul>' +
+      (r.pollingPlace ? pollingPlaceHtml(r.pollingPlace) : '') +
       (r.inHome ? '' : '<p class="gcd-dm-hint">This address is in ' + esc(r.countyLabel) +
         '. County races listed here are for ' + esc(cfg.homeCounty) + ' County only.</p>');
 
-    barEl.querySelectorAll('button').forEach(function (b) {
+    var showPolling = barEl.querySelector('.gcd-dm-polling-show');
+    if (showPolling) showPolling.addEventListener('click', function () { fitToPollingPlace(r.pollingPlace); });
+
+    barEl.querySelectorAll('.gcd-dm-chips button').forEach(function (b) {
       b.addEventListener('click', function () {
         var group = b.dataset.group;
         if (group === 'precincts') {
@@ -328,5 +378,5 @@
       section('Your Democratic officials', list.filter(function (c) { return !c.onBallot; }));
   }
 
-  barEl.innerHTML = '<p class="gcd-dm-hint">Search for an address or tap the map to see your districts and Democratic candidates.</p>';
+  barEl.innerHTML = '<p class="gcd-dm-hint">Search for an address or tap the map to see your districts, polling place and Democratic candidates.</p>';
 })();

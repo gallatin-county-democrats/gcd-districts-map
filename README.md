@@ -8,6 +8,9 @@ candidates on their ballot.
 - **Boundaries:** QGIS exports → `scripts/prepare_tilesets.py` → Mapbox
   tilesets. Address lookup uses Mapbox Tilequery.
 - **Styling:** a Mapbox Studio style. See [docs/mapbox-studio-setup.md](docs/mapbox-studio-setup.md).
+- **Polling places:** `site/polling_places.json`, built from the Elections
+  Office list by `scripts/prepare_polling_places.py`. See
+  [Updating polling places](#updating-polling-places).
 - **Candidates:** a Google Sheet, published as CSV. The **Publish candidates**
   GitHub Action copies it into `site/candidates.json`.
 - **Site:** static files in `site/`, deployed to GitHub Pages by the
@@ -51,6 +54,26 @@ crop it square, resize to about 256×256 px, save as JPEG, then on GitHub open
 name in the Sheet's `photo_url` column and run **Publish candidates**. The
 preview warns if a file name in the Sheet doesn't match a file in `site/photos/`.
 
+## Updating polling places
+
+After an address lookup, the map shows the precinct's Election Day polling
+place, with directions, and pins it on the map. Each place is listed once in
+`site/polling_places.json` with its coordinates and precincts.
+
+To load a new list from the Gallatin County Elections Office, save it as
+`data/gallatin_polling_places.csv` with the columns `Precinct`, `Polling Place`,
+`Address` and `City`, then run:
+
+```
+MAPBOX_TOKEN=pk.... python3 scripts/prepare_polling_places.py
+```
+
+It geocodes each new place, keeps the saved coordinates of places already in
+the file, and lists any precincts on the map that have no polling place. Check
+the new pins on the map, then commit `site/polling_places.json`. To move a pin
+that landed in the wrong spot, edit its `coordinates` (`[longitude, latitude]`)
+in the file.
+
 ## Settings
 
 `site/config.json` holds the style URL, tileset IDs, Sheet link, election
@@ -80,6 +103,7 @@ delete the old token.
 
 ```
 python3 scripts/prepare_tilesets.py          # data/*.geojson → tilesets/*.geojson for Mapbox upload
+MAPBOX_TOKEN=pk.... python3 scripts/prepare_polling_places.py   # polling place CSV → site/polling_places.json
 node scripts/publish_candidates.js           # preview the Sheet locally (add --write to save)
 MAPBOX_TOKEN=pk.... python3 scripts/build_site.py   # → _site/, as deployed
 python3 dev/server.py                        # local preview on :8080 (see below)

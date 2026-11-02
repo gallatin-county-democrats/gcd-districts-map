@@ -1,0 +1,194 @@
+{
+  "county": "Gallatin",
+  "places": [
+    {
+      "name": "BASE Community Center",
+      "address": "285 Simkins Dr.",
+      "city": "Big Sky",
+      "coordinates": [
+        -111.308145,
+        45.258805
+      ],
+      "precincts": [
+        "60C",
+        "60D"
+      ]
+    },
+    {
+      "name": "Belgrade Special Events Center",
+      "address": "220 Spooner Rd.",
+      "city": "Belgrade",
+      "coordinates": [
+        -111.178725,
+        45.782763
+      ],
+      "precincts": [
+        "66A",
+        "67A",
+        "67B",
+        "67C",
+        "67D"
+      ]
+    },
+    {
+      "name": "Bridger Canyon Fire Station",
+      "address": "8081 Bridger Canyon Rd.",
+      "city": "Bozeman",
+      "coordinates": [
+        -110.910599,
+        45.716053
+      ],
+      "precincts": [
+        "57A"
+      ]
+    },
+    {
+      "name": "Fairgrounds",
+      "address": "Tamarack St. and Black Ave.",
+      "city": "Bozeman",
+      "coordinates": [
+        -111.035845,
+        45.688582
+      ],
+      "precincts": [
+        "57B",
+        "57C",
+        "63B",
+        "63C",
+        "63D",
+        "64A",
+        "64B",
+        "64C",
+        "64D",
+        "65A",
+        "65B",
+        "65C",
+        "65D",
+        "66B",
+        "66C",
+        "66D"
+      ]
+    },
+    {
+      "name": "Gallatin Gateway Community Center",
+      "address": "145 Mill St.",
+      "city": "Gallatin Gateway",
+      "coordinates": [
+        -111.200285,
+        45.591352
+      ],
+      "precincts": [
+        "60A"
+      ]
+    },
+    {
+      "name": "Hope Lutheran Church (Gym)",
+      "address": "2152 W. Graf St.",
+      "city": "Bozeman",
+      "coordinates": [
+        -111.066213,
+        45.648623
+      ],
+      "precincts": [
+        "59A",
+        "59B",
+        "59C",
+        "59D",
+        "60B",
+        "61C",
+        "62B",
+        "62C",
+        "62D"
+      ]
+    },
+    {
+      "name": "MSU Student Wellness Center",
+      "address": "950 W. Grant St.",
+      "city": "Bozeman",
+      "coordinates": [
+        -111.049903,
+        45.66472
+      ],
+      "precincts": [
+        "61A",
+        "61B"
+      ]
+    },
+    {
+      "name": "Manhattan Christian School",
+      "address": "8000 Churchill Rd.",
+      "city": "Manhattan",
+      "coordinates": [
+        -111.302425,
+        45.75239
+      ],
+      "precincts": [
+        "68A"
+      ]
+    },
+    {
+      "name": "Manhattan High School",
+      "address": "200 W. Fulton Ave.",
+      "city": "Manhattan",
+      "coordinates": [
+        -111.329978,
+        45.861869
+      ],
+      "precincts": [
+        "77A",
+        "77B"
+      ]
+    },
+    {
+      "name": "Povah Community Center",
+      "address": "10 Geyser St.",
+      "city": "West Yellowstone",
+      "coordinates": [
+        -111.10925,
+        44.658395
+      ],
+      "precincts": [
+        "60E"
+      ]
+    },
+    {
+      "name": "River Rock Community Center",
+      "address": "101 River Rock Rd.",
+      "city": "Belgrade",
+      "coordinates": [
+        -111.21772,
+        45.77443
+      ],
+      "precincts": [
+        "68B",
+        "68C",
+        "68D"
+      ]
+    },
+    {
+      "name": "Three Forks High School",
+      "address": "212 E. Neal St.",
+      "city": "Three Forks",
+      "coordinates": [
+        -111.547437,
+        45.896327
+      ],
+      "precincts": [
+        "69A"
+      ]
+    },
+    {
+      "name": "Zoot Enterprises",
+      "address": "555 Zoot Enterprises Ln.",
+      "city": "Bozeman/Four Corners",
+      "coordinates": [
+        -111.19959,
+        45.678279
+      ],
+      "precincts": [
+        "62A",
+        "63A"
+      ]
+    }
+  ]
+}

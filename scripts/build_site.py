@@ -5,7 +5,8 @@ Usage:  MAPBOX_TOKEN=pk.... python3 scripts/build_site.py
 Output: _site/
 
 Copies site/ and writes _site/config.js from site/config.json, the published
-candidates (site/candidates.json) and the Mapbox token. The token comes from
+candidates (site/candidates.json), the polling places
+(site/polling_places.json) and the Mapbox token. The token comes from
 the environment (a GitHub Actions secret), so it is never committed; it is a
 public token, so restrict it to the site's URL in Mapbox.
 
@@ -26,7 +27,7 @@ SITE = ROOT / "site"
 OUT = ROOT / "_site"
 
 # Read by the build, not copied into _site as-is.
-SOURCE_ONLY = {"config.json", "candidates.json"}
+SOURCE_ONLY = {"config.json", "candidates.json", "polling_places.json"}
 
 
 def client_config(token, rows, overrides=None):
@@ -36,12 +37,18 @@ def client_config(token, rows, overrides=None):
     config.update(overrides or {})
     config["token"] = token
     config["candidates"] = {"rows": rows}
+    config["pollingPlaces"] = polling_places()
     return config
 
 
 def published_rows():
     path = SITE / "candidates.json"
     return json.loads(path.read_text()) if path.exists() else []
+
+
+def polling_places():
+    path = SITE / "polling_places.json"
+    return json.loads(path.read_text())["places"] if path.exists() else []
 
 
 def config_js(config):
