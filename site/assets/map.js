@@ -87,9 +87,13 @@
   });
 
   function pollingPinElement() {
-    var el = document.createElement('div');
+    // A link to directions; text and href are set in showPollingPlace().
+    var el = document.createElement('a');
     el.className = 'gcd-dm-polling-pin';
-    el.innerHTML = '<span></span>'; // text set in showPollingPlace()
+    el.target = '_blank';
+    el.rel = 'noopener';
+    el.title = 'Get directions';
+    el.innerHTML = '<span></span>';
     // Don't let a tap on the pin reach the map, which would look up the polling place's own address.
     el.addEventListener('click', function (e) { e.stopPropagation(); });
     return el;
@@ -257,7 +261,9 @@
   // Pin the polling place and fit the map to it and the looked-up address.
   function showPollingPlace(place) {
     if (!place) { pollingMarker.remove(); return; }
-    pollingMarker.getElement().firstChild.textContent = 'Your polling place: ' + place.name;
+    var pin = pollingMarker.getElement();
+    pin.href = directionsUrl(place);
+    pin.firstChild.textContent = 'Your polling place: ' + place.name;
     pollingMarker.setLngLat(place.coordinates).addTo(map);
     fitToPollingPlace(place);
   }
@@ -269,10 +275,14 @@
 
   // --- Results ---------------------------------------------------------------
 
+  function directionsUrl(place) {
+    return 'https://www.google.com/maps/dir/?api=1&destination=' +
+      encodeURIComponent(place.name + ', ' + place.address + ', ' + place.city.split('/')[0] + ', MT');
+  }
+
   function pollingPlaceHtml(place) {
     var where = place.address + ', ' + place.city;
-    var directions = 'https://www.google.com/maps/dir/?api=1&destination=' +
-      encodeURIComponent(place.name + ', ' + place.address + ', ' + place.city.split('/')[0] + ', MT');
+    var directions = directionsUrl(place);
     return '<div class="gcd-dm-polling">' +
       '<p class="gcd-dm-chip-caption">Your Election Day polling place</p>' +
       '<p class="gcd-dm-polling-name">' + esc(place.name) + '</p>' +

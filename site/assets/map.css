@@ -158,8 +158,13 @@ html, body {
 .gcd-dm-polling-show:hover { color: var(--gcd-cream); }
 .gcd-dm-polling-pin {
   padding-bottom: 8px; /* room for the pointer, so the tip sits on the place */
-  cursor: default;
+  text-decoration: none;
+  cursor: pointer;
 }
+.gcd-dm-polling-pin:hover span,
+.gcd-dm-polling-pin:focus-visible span { background: var(--gcd-navy-raised); text-decoration: underline; }
+.gcd-dm-polling-pin:focus-visible { outline: none; }
+.gcd-dm-polling-pin:focus-visible span { outline: 3px solid var(--gcd-cream); outline-offset: 1px; }
 .gcd-dm-polling-pin span {
   position: relative;
   display: block;
