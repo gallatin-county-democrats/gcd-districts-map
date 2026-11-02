@@ -80,8 +80,8 @@ html, body {
 .gcd-dm-layers button[aria-checked="true"] { background: var(--gcd-copper-light); color: var(--gcd-navy); font-weight: 600; }
 .gcd-dm-layers button:focus-visible,
 .gcd-dm-chips button:focus-visible { outline: 3px solid var(--gcd-cream); outline-offset: -3px; }
-.gcd-dm-precinct-toggle { font-size: 14px; color: var(--gcd-ink); display: flex; gap: 6px; align-items: center; cursor: pointer; }
-.gcd-dm-precinct-toggle input { accent-color: var(--gcd-copper); width: 16px; height: 16px; margin: 0; }
+.gcd-dm-toggle { font-size: 14px; color: var(--gcd-ink); display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.gcd-dm-toggle input { accent-color: var(--gcd-copper); width: 16px; height: 16px; margin: 0; }
 
 /* Map. Fixed pixel heights: vh units inside an auto-sized iframe would grow forever. */
 .gcd-dm-map {

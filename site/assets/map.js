@@ -45,7 +45,8 @@
       return '<button type="button" role="radio" aria-checked="false" data-group="' + g.key + '">' + g.label + '</button>';
     }).join('') +
     '    </div>' +
-    '    <label class="gcd-dm-precinct-toggle"><input type="checkbox" checked> Show Precincts</label>' +
+    '    <label class="gcd-dm-toggle gcd-dm-precinct-toggle"><input type="checkbox" checked> Show Precincts</label>' +
+    '    <label class="gcd-dm-toggle gcd-dm-polling-toggle"><input type="checkbox" checked> Show Polling Location</label>' +
     '  </div>' +
     '  <div class="gcd-dm-map" id="gcd-dm-map"></div>' +
     '  <div class="gcd-dm-bar" aria-live="polite"></div>' +
@@ -61,6 +62,7 @@
   var candidatesEl = root.querySelector('.gcd-dm-candidates');
   var layerButtons = root.querySelectorAll('.gcd-dm-layers button');
   var precinctToggle = root.querySelector('.gcd-dm-precinct-toggle input');
+  var pollingToggle = root.querySelector('.gcd-dm-polling-toggle input');
 
   var sheet = GCDCandidates.normalize((cfg.candidates && cfg.candidates.rows) || [], cfg);
   if (sheet.issues.length) console.info('[district map] candidate sheet issues', sheet.issues);
@@ -174,6 +176,7 @@
     b.addEventListener('click', function () { showGroup(b.dataset.group); });
   });
   precinctToggle.addEventListener('change', function () { setGroupVisible('precincts', precinctToggle.checked); });
+  pollingToggle.addEventListener('change', updatePollingPin);
 
   // --- Address lookup ----------------------------------------------------------
 
@@ -242,7 +245,8 @@
     map.flyTo({ center: point, zoom: Math.max(map.getZoom(), zoom || 0) });
     barEl.innerHTML = '<p class="gcd-dm-hint">Looking up districts…</p>';
     candidatesEl.innerHTML = '';
-    pollingMarker.remove();
+    pollingPlace = null;
+    updatePollingPin();
 
     tilequery(point[0], point[1]).then(function (features) {
       if (seq !== lookupSeq) return;
@@ -258,14 +262,24 @@
     });
   }
 
+  var pollingPlace = null; // the looked-up precinct's, shown when "Show Polling Location" is checked
+
   // Pin the polling place and fit the map to it and the looked-up address.
   function showPollingPlace(place) {
-    if (!place) { pollingMarker.remove(); return; }
-    var pin = pollingMarker.getElement();
-    pin.href = directionsUrl(place);
-    pin.firstChild.textContent = 'Your polling place: ' + place.name;
-    pollingMarker.setLngLat(place.coordinates).addTo(map);
-    fitToPollingPlace(place);
+    pollingPlace = place || null;
+    if (place) {
+      var pin = pollingMarker.getElement();
+      pin.href = directionsUrl(place);
+      pin.firstChild.textContent = 'Your polling place: ' + place.name;
+      pollingMarker.setLngLat(place.coordinates);
+    }
+    updatePollingPin();
+    if (place && pollingToggle.checked) fitToPollingPlace(place);
+  }
+
+  function updatePollingPin() {
+    if (pollingPlace && pollingToggle.checked) pollingMarker.addTo(map);
+    else pollingMarker.remove();
   }
 
   function fitToPollingPlace(place) {
@@ -322,7 +336,13 @@
         '. County races listed here are for ' + esc(cfg.homeCounty) + ' County only.</p>');
 
     var showPolling = barEl.querySelector('.gcd-dm-polling-show');
-    if (showPolling) showPolling.addEventListener('click', function () { fitToPollingPlace(r.pollingPlace); });
+    if (showPolling) {
+      showPolling.addEventListener('click', function () {
+        pollingToggle.checked = true;
+        updatePollingPin();
+        fitToPollingPlace(r.pollingPlace);
+      });
+    }
 
     barEl.querySelectorAll('.gcd-dm-chips button').forEach(function (b) {
       b.addEventListener('click', function () {
