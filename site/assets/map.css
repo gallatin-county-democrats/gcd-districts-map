@@ -278,16 +278,24 @@ html, body {
 /* Page around the map */
 .gcd-page { max-width: 1000px; margin: 0 auto; padding: 20px 16px 32px; }
 .gcd-page-header { margin-bottom: 12px; }
-.gcd-page-org {
-  margin: 0;
+.gcd-page-logo { display: inline-block; }
+.gcd-page-logo img { display: block; width: 100%; height: auto; }
+.gcd-page-header .gcd-page-logo { width: 260px; max-width: 70%; }
+.gcd-page-header h1 { margin: 10px 0 0; font-size: 28px; line-height: 1.2; color: var(--gcd-cream); }
+.gcd-page-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gcd-line);
+  text-align: center;
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gcd-copper-light);
 }
-.gcd-page-header h1 { margin: 2px 0 0; font-size: 28px; line-height: 1.2; color: var(--gcd-cream); }
+.gcd-page-footer .gcd-page-logo { width: 180px; margin-bottom: 10px; }
+.gcd-page-footer p { margin: 4px 0; }
+.gcd-page-footer a:not(.gcd-page-logo) { color: var(--gcd-copper-light); overflow-wrap: anywhere; }
+.gcd-page-footer a:not(.gcd-page-logo):hover { color: var(--gcd-cream); }
+.gcd-page-logo:focus-visible { outline: 3px solid var(--gcd-cream); outline-offset: 4px; }
 @media (max-width: 600px) {
   .gcd-page { padding-top: 14px; }
+  .gcd-page-header .gcd-page-logo { width: 200px; }
   .gcd-page-header h1 { font-size: 23px; }
 }
