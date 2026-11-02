@@ -53,7 +53,7 @@
     '  <div class="gcd-dm-candidates"></div>' +
     '  <p class="gcd-dm-note">Districts are looked up from map boundaries and can be off for addresses right on a line. ' +
     (cfg.voterLookupUrl
-      ? 'Confirm your districts and polling place on <a href="' + esc(cfg.voterLookupUrl) + '" target="_blank" rel="noopener">My Voter Page</a>.'
+      ? 'Confirm your districts and polling place on the <a href="' + esc(cfg.voterLookupUrl) + '" target="_blank" rel="noopener">My Voting Information page</a>.'
       : '') +
     '  </p>' +
     '</div>';

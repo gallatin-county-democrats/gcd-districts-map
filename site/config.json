@@ -13,7 +13,7 @@
   "electionYear": 2026,
   "knownDistricts": { "house": "57, 59-69, 77", "senate": "29-35, 39" },
   "bounds": [-111.81, 44.47, -110.78, 46.2],
-  "voterLookupUrl": "https://prodvoterportal.mt.gov/",
+  "voterLookupUrl": "https://voterportal.mt.gov/WhereToVote.aspx",
   "pollingPlacesUrl": "https://www.gallatinmt.gov/380/Elections",
   "pollingLinks": [
     { "label": "Voting Information and FAQs", "url": "https://gallatindemocrats.com/voting-info/" },
