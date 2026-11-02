@@ -280,7 +280,7 @@ html, body {
 .gcd-page-header { margin-bottom: 12px; }
 .gcd-page-logo { display: inline-block; }
 .gcd-page-logo img { display: block; width: 100%; height: auto; }
-.gcd-page-header .gcd-page-logo { width: 260px; max-width: 70%; }
+.gcd-page-header .gcd-page-logo { display: block; width: 260px; max-width: 70%; margin: 0 auto; }
 .gcd-page-header h1 { margin: 10px 0 0; font-size: 28px; line-height: 1.2; color: var(--gcd-cream); }
 .gcd-page-footer {
   margin-top: 28px;
