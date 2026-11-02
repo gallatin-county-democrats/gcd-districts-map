@@ -89,7 +89,7 @@
   function pollingPinElement() {
     var el = document.createElement('div');
     el.className = 'gcd-dm-polling-pin';
-    el.innerHTML = '<span>Polling place</span>';
+    el.innerHTML = '<span></span>'; // text set in showPollingPlace()
     // Don't let a tap on the pin reach the map, which would look up the polling place's own address.
     el.addEventListener('click', function (e) { e.stopPropagation(); });
     return el;
@@ -257,6 +257,7 @@
   // Pin the polling place and fit the map to it and the looked-up address.
   function showPollingPlace(place) {
     if (!place) { pollingMarker.remove(); return; }
+    pollingMarker.getElement().firstChild.textContent = 'Your polling place: ' + place.name;
     pollingMarker.setLngLat(place.coordinates).addTo(map);
     fitToPollingPlace(place);
   }

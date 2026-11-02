@@ -170,7 +170,8 @@ html, body {
   color: var(--gcd-cream);
   font-size: 13px;
   font-weight: 600;
-  white-space: nowrap;
+  max-width: 220px; /* long names wrap instead of covering a phone-width map */
+  text-align: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .gcd-dm-polling-pin span::after {
