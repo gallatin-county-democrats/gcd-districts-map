@@ -144,6 +144,19 @@ html, body {
 .gcd-dm-polling p { margin: 0; }
 .gcd-dm-polling-name { font-weight: 600; font-size: 17px; }
 .gcd-dm-polling-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px !important; font-size: 14px; }
+.gcd-dm-polling-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px !important; }
+.gcd-dm-button {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--gcd-copper-light);
+  color: var(--gcd-navy);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.gcd-dm-button:hover { background: var(--gcd-cream); }
+.gcd-dm-button:focus-visible { outline: 3px solid var(--gcd-cream); outline-offset: 2px; }
 .gcd-dm-polling-source {
   margin-top: 8px !important;
   padding-top: 8px;
